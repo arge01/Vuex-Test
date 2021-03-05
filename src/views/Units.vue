@@ -3,13 +3,10 @@
         <ul class="filter">
             <li><a @click="filtered('')">All</a></li>
             <li><a @click="filtered('Feudal')">Feudal</a></li>
-            <li><a @click="filtered('Feudal')">Ali</a></li>
-            <li><a @click="filtered('Feudal')">veli</a></li>
-            <li><a @click="filtered('49-50')">49 - 50</a></li>
+            <li><a @click="filtered('Dark')">Dark</a></li>
+            <li><a @click="filtered('Castle')">Castle</a></li>
+            <li><a @click="filtered('Imperial')">Imperial</a></li>
         </ul>
-        <div class="ages">
-            {{logs()}}
-        </div>
         <div class="tables">
             <div class="tables__left">
                 <table>
@@ -20,7 +17,7 @@
                         <th>Costs- wood</th>
                         <th> costs - gold</th>
                     </tr>
-                    <tr :key="index" v-for="(item, index) in getUnits" @click="addUnitSelection(item)">
+                    <tr :key="index" v-for="(item, index) in units" @click="addUnitSelection(item)">
                         <td v-if="!isSelectedUnit(item)" style="cursor:pointer" >
                             {{item.id}}</td>
                         <td v-else style="cursor:pointer;" @click="removeUnitSelection(item)"> {{item.id}}
@@ -114,14 +111,12 @@
 
         data() {
             return {
-                getUnits: {
-                    ...this.$store.state.units
-                }
+                
             }
         },
         computed: {
             units() {
-                return this.$store.state.units;
+                return this.$store.state.filterUnits;
             },
         },
         methods: {
@@ -135,13 +130,8 @@
                 return this.$store.getters.isSelectedUnit(unit);
             },
             filtered(filter) {
-                return this.getUnits = {...this.$store.getters.filterUnitsData(filter)};
-                //const unit = {...this.$store.getters.filterUnitsData(filter)};
-                //this.$store.commit("filterUpdateUnit", [unit]);
+                this.$store.commit("filterUpdateUnit", filter);
             },
-            logs() {
-                console.log(this.$store.state.units);
-            }
         },
         mounted() {
             this.$store.dispatch("getUnits");
